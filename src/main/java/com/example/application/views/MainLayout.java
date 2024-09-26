@@ -8,12 +8,17 @@ import com.vaadin.flow.component.html.Footer;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Header;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.SvgIcon;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
 import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.server.menu.AvailableViewInfo;
+import com.vaadin.flow.server.menu.MenuRegistry;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import org.vaadin.lineawesome.LineAwesomeIcon;
+
+import java.util.List;
 
 /**
  * The main view is a top-level placeholder for other views.
@@ -51,8 +56,10 @@ public class MainLayout extends AppLayout {
     private SideNav createNavigation() {
         SideNav nav = new SideNav();
 
-        nav.addItem(new SideNavItem("Hello Flow", HelloFlowView.class, LineAwesomeIcon.GLOBE_SOLID.create()));
-        nav.addItem(new SideNavItem("About Flow", AboutFlowView.class, LineAwesomeIcon.FILE.create()));
+        List<AvailableViewInfo> menuItems = MenuRegistry.collectMenuItemsList();
+        menuItems.forEach(item -> {
+            nav.addItem(new SideNavItem(item.title(), item.route(), new SvgIcon(item.menu().icon())));
+        });
 
         return nav;
     }
